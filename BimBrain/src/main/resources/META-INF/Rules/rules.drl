@@ -1,0 +1,37 @@
+package rules
+
+import com.tc.BimBrain.Domain.Model.Rectangle
+
+rule "Length and width of the house is in range"
+    when
+        rectangle: Rectangle(length>=9.125&&length<=11)
+        retangle: Rectangle(width>=8.5&&width<=10)
+    then
+        rectangle.setValidRangeRule("Length and width of the house are in range");
+    end
+
+rule "Valid step size rule"
+    when
+        rec: Rectangle(validLengthStep()==0&&validWidthStep()==0)
+    then
+        rec.setCorrectStepIncrease("Step size is valid");
+    end
+
+rule "inValid step size rule"
+    when
+        rec: Rectangle(validLengthStep()!=0||validWidthStep()!=0)
+    then
+        rec.setCorrectStepIncrease("Step size is invalid");
+        rec.setLength(9.125);
+        rec.setWidth(8.5);
+    end
+
+rule "Length and width of the house is not in range"
+    when
+        rect: Rectangle(((length<9.125)||(length>11))||((width<8.5)||(width>10)))
+    then
+        rect.setValidRangeRule("Length and width of the house are not in range");
+        rect.setLength(9.125);
+        rect.setWidth(8.5);
+    end
+
